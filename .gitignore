@@ -1,0 +1,42 @@
+built/*
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Compiled binary addons (http://nodejs.org/api/addons.html)
+build/Release
+
+# Ignore .DS_Store files on OS X
+.DS_Store
+*.sw*
+*~
+.sass-cache
+*.log
+node_modules/
+.idea/
+bin/
+coverage/
+.brackets.json
+content/target/*
+.babel-cache
+npm-debug.log*
+lib-cov
+.grunt
+.env
+.vscode/
+.yarnclean
+.roadrunner.json
+.now-sync-auth*
+.yo-rc.json
+stats.json
+package-lock.json
+.jira-credentials.json
+
+# Ignore built css files
+*.min.css
