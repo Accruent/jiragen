@@ -1,9 +1,9 @@
 {
-  "name": "jira-generate-stories",
+  "name": "jiragen",
   "version": "0.0.1",
   "description": "A CLI tool to generate JIRA issues and place them on a board",
   "main": "index.js",
-  "repository": "git@github.com:kaibyao/jira-generate-stories.git",
+  "repository": "git@github.com:Accruent/jiragen.git",
   "author": "Kai Yao <kai.b.yao@gmail.com>",
   "license": "MIT",
   "private": false,
