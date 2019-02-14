@@ -40,3 +40,6 @@ package-lock.json
 
 # Ignore built css files
 *.min.css
+
+/target
+**/*.rs.bk

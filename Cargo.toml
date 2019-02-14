@@ -1,0 +1,10 @@
+[package]
+name = "jiragen"
+version = "0.1.0"
+authors = ["Kai Yao <kai.b.yao@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+clap = { version = "^2.32", features = ["color"] }
+http = "^0.1"
+strict-yaml-rust = "^0.1"
