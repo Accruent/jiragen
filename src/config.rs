@@ -1,3 +1,5 @@
+use clap::Arg;
+
 pub static DEFAULT_ISSUES_FILE_PATH: &str = "./jiragen_issues.csv";
 pub static DEFAULT_CONFIG_FILE_PATH: &str = "./jiragen.yaml";
 
@@ -6,6 +8,15 @@ pub struct Config<'a> {
   pub jira_user: &'a str,
   pub jira_password: &'a str,
   pub issues_file_path: Option<&'a str>,
+}
+
+pub fn get_config_arg<'a, 'b>() -> Arg<'a, 'b> {
+  Arg::with_name("config")
+    .long("config")
+    .short("c")
+    .help("A custom path to the config file (default \"./jiragen.yaml\").")
+    .default_value("./jiragen.yaml")
+    .takes_value(true)
 }
 
 pub fn write_config_str(config: &Config) -> String {
