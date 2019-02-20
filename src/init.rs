@@ -1,7 +1,6 @@
 use crate::config::{get_config_arg, get_issues_arg, Config};
 use crate::error::Error;
 use clap::{App, ArgMatches, SubCommand};
-use serde_json::json;
 use std::fs::write;
 
 /// Returns the `init` SubCommand.
@@ -25,14 +24,6 @@ pub fn parse_init(matches: &ArgMatches) -> Result<(), Error> {
     jira_url: "".to_string(),
     jira_user: "".to_string(),
     jira_password: "".to_string(),
-    issues_schema: json!({
-      "project": { "key": "string" },
-      "summary": "string",
-      "description": "string",
-      "issuetype": {"id": "string"},
-      "labels": ["string"],
-      "assignee": {"name": "string"},
-    }),
   };
 
   write(config_path, serde_json::to_string_pretty(&config)?)?;
@@ -40,20 +31,20 @@ pub fn parse_init(matches: &ArgMatches) -> Result<(), Error> {
 
   let mut csv_writer = csv::Writer::from_path(issues_path)?;
   csv_writer.write_record(&[
-    "Project",
-    "Summary",
-    "Description",
-    "Issue Type",
-    "Labels",
-    "Assignee",
-  ])?;
-  csv_writer.write_record(&[
     "project.key",
     "summary",
     "description",
     "issuetype.id",
     "labels[]",
     "assignee.name",
+  ])?;
+  csv_writer.write_record(&[
+    "Project",
+    "Summary",
+    "Description",
+    "Issue Type",
+    "Labels",
+    "Assignee",
   ])?;
 
   println!("Wrote issues: {}", issues_path);

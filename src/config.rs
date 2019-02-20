@@ -1,6 +1,5 @@
 use clap::Arg;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::fs::read_to_string;
 
 pub static DEFAULT_ISSUES_FILE_PATH: &str = "./jiragen_issues.csv";
@@ -12,7 +11,6 @@ pub struct Config {
   pub jira_url: String,
   pub jira_user: String,
   pub jira_password: String,
-  pub issues_schema: Value,
 }
 
 /// Returns the --config argument options

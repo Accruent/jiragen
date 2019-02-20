@@ -9,15 +9,23 @@ Download the binary (located in the releases section of the GitHub repo) and run
 ## Usage
 
 ```bash
-jiragen init # Creates a config file + issues template csv file
-jiragen generate # Generates the issues template .csv file
-jiragen push # Reads the issues template .csv file to create corresponding issues in JIRA
+A CLI tool to generate JIRA issues and place them on a board.
+
+USAGE:
+    jiragen <SUBCOMMAND>
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+SUBCOMMANDS:
+    init    Creates the JiraGen config file. [aliases: i]
+    push    Pushes issues to JIRA. [aliases: p]
 ```
 
 1. Run `jiragen init`. This creates a config file (default: `"./jiragen.yaml"`).
 1. Edit the config file with your JIRA credentials and save the file.
-1. Run `jiragen generate`. This creates the issues template .csv file (default: `"./jiragen-issues.csv"`) with prefilled column ids & names from your JIRA configuration.
-1. Edit the issues template .csv file with the issues you would like to generate. Feel free to remove any field columns that are not necessary for issue creation.
+1. Edit the issues template .csv file with the issues you would like to generate. Feel free to remove any field columns that are not necessary for issue creation. See [section about how to enter column data](#csv-syntax).
 1. Run `jiragen push`. This reads the data in the file and creates the corresponding issues in JIRA.
 
 ## Commands
@@ -32,35 +40,10 @@ jiragen init
 
 jiragen init --config ./config/my-custom-jiragen-config.yaml
 #=> creates "./config/my-custom-jiragen-config.yaml"
+
+jiragen init --config ./config/my-custom-jiragen-config.yaml  --issues ./config/my-issues-template.csv
+#=> creates "./config/my-custom-jiragen-config.yaml" and "./config/my-issues-template.csv"
 ```
-
-#### Options for `jiragen init`
-
-**`--config`** (default: `"./jiragen.yaml"`)
-A custom path where the config file is created.
-
-**`--issues`** (default: `"./jiragen-issues.csv"`)
-A custom path where the issues template CSV file is created.
-
-<!-- ### Command: `jiragen generate`
-
-Creates the issues template .csv file.
-
-```bash
-jiragen generate
-# => creates jiragen-issues.csv in current folder
-
-jiragen generate --config ./config/my-custom-config.yaml --issues ./config/my-issues-template.csv
-# => reads the config file located at "./config/my-custom-config.yaml" and creates "./config/my-issues-template.csv"
-```
-
-#### Options for `jiragen generate`
-
-**`--config`** (default: `"./jiragen.yaml"`)
-The path to the custom config file, if one was set.
-
-**`--issues`** (default: `"./jiragen-issues.csv"`)
-A custom path where the issues template CSV file is created. -->
 
 ### Command: `jiragen push`
 
@@ -74,13 +57,13 @@ jiragen push --config ./config/my-custom-jiragen-config.yaml --issues ./config/m
 #=> reads the files located at "./config/my-custom-jiragen-config.yaml" and "./config/my-issues-template.csv" and pushes issues to JIRA
 ```
 
-#### Options for `jiragen push`
+### Command Options
 
 **`--config`** (default: `"./jiragen.yaml"`)
-The path to the custom config file, if one was set.
+A custom path where the config file is created.
 
 **`--issues`** (default: `"./jiragen-issues.csv"`)
-A custom path to the issues template CSV file, if one was set.
+A custom path where the issues template CSV file is created.
 
 ## Configuration
 
@@ -92,9 +75,6 @@ The JIRA user to login as.
 
 **`jira_password`** (string)
 The JIRA user’s password. (The tool uses Basic Auth).
-
-**`issues_schema`** (object)
-A JSON object describing the shape of the issue data that is sent to JIRA (See [JIRA’s API](https://developer.atlassian.com/cloud/jira/platform/rest/v2/#api-api-2-issue-bulk-post) for an example of the type of data that is sent to JIRA’s API).
 
 ### The Issues Template file
 
@@ -110,38 +90,45 @@ JIRA’s API requires that the data sent is shaped in specific ways. A user fiel
 
 In order to follow this formatting within our CSV file, the first row (ids) uses `[]` and `.` to describe an array or object property, respectively:
 
+Some .csv examples:
+
 ```bash
-# first row = csv id field/key, second row = value of that id
+# first row = csv id field/key, second row = readable field name (ignored), third row = value of that id
 
 summary
+Summary
 A Test Summary
 # { "summary": "A Test Summary" }
 
 labels[]
+Labels
 a-label
 # { "labels": ["a-label"] }
 
 issuetype.id
+Issue Type
 12345
 # { "issuetype": {"id": "12345"} }
 
 components[].id
+Components
 A Component
 # { "components": [ {"id": "A Component"} ] }
 
 watcher.watchers[].accountId
+Watchers
 abcc281-qk3j8d8fj
 # { "watcher": { "watchers": [{"accountId": "abcc281-qk3j8d8fj"}] } }
 
 timetracking.originalEstimate,timetracking.remainingEstimate
+Time Tracking,Time Tracking
 10,5
 # { "timetracking": { "originalEstimate": "10", "remainingEstimate": "5" } }
 
 fixVersions[].id,fixVersions[].id
+Fix Versions,Fix Versions
 10000,10001
 # { "fixVersions": [ {"id": "10000"}, {"id": "10001"} ] }
-
-# Unimplemented: multiple properties of an object in an array (I don't think there's a need for this for bulk JIRA issue creation)
 ```
 
 ## Todos
