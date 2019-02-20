@@ -1,45 +1,44 @@
 use clap::Arg;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
+use std::fs::read_to_string;
 
 pub static DEFAULT_ISSUES_FILE_PATH: &str = "./jiragen_issues.csv";
-pub static DEFAULT_CONFIG_FILE_PATH: &str = "./jiragen.yaml";
+pub static DEFAULT_CONFIG_FILE_PATH: &str = "./jiragen.json";
 
-pub struct Config<'a> {
-  pub jira_url: &'a str,
-  pub jira_user: &'a str,
-  pub jira_password: &'a str,
-  pub issues_file_path: Option<&'a str>,
+/// JiraGen configuration that is read from/saved to the config file.
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Config {
+  pub jira_url: String,
+  pub jira_user: String,
+  pub jira_password: String,
+  pub issues_schema: Value,
 }
 
+/// Returns the --config argument options
 pub fn get_config_arg<'a, 'b>() -> Arg<'a, 'b> {
   Arg::with_name("config")
     .long("config")
     .short("c")
-    .help("A custom path to the config file (default \"./jiragen.yaml\").")
-    .default_value("./jiragen.yaml")
+    .help("A custom path to the config file.")
+    .default_value(DEFAULT_CONFIG_FILE_PATH)
     .takes_value(true)
 }
 
-pub fn write_config_str(config: &Config) -> String {
-  let config_str = format!(
-    r#"jira_url = "{}"
-jira_user = "{}"
-jira_password = "{}"
-issues_file_path = "{}"
-"#,
-    config.jira_url,
-    config.jira_user,
-    config.jira_password,
-    match config.issues_file_path {
-      Some(issues_file_path) => issues_file_path,
-      None => DEFAULT_ISSUES_FILE_PATH,
-    }
-  );
-
-  config_str
+/// Returns the --issues argument options
+pub fn get_issues_arg<'a, 'b>() -> Arg<'a, 'b> {
+  Arg::with_name("issues")
+    .long("issues")
+    .short("i")
+    .help("A custom path to the issues template CSV file")
+    .default_value(DEFAULT_ISSUES_FILE_PATH)
+    .takes_value(true)
 }
 
-pub fn get_default_issues_template() -> &'static str {
-  static default_issues_template: &str = r#""#;
+/// Reads the contents of the given file path and returns a JiraGen Config object
+pub fn read_config_file(path: &str) -> Config {
+  let config_str = &read_to_string(path).unwrap();
+  let json = serde_json::from_str(config_str).unwrap();
 
-  default_issues_template
+  json
 }

@@ -1,12 +1,17 @@
-// use strict_yaml_rust::{StrictYamlEmitter, StrictYamlLoader};
+#[macro_use]
+extern crate lazy_static;
 
+mod api;
 mod config;
-mod generate;
+mod error;
 mod init;
+mod push;
+mod serialize;
 
 use clap::{crate_authors, crate_version, App, AppSettings};
-use generate::{parse_generate, subcommand_generate};
+// use generate::{parse_generate, subcommand_generate};
 use init::{parse_init, subcommand_init};
+use push::{parse_push, subcommand_push};
 
 fn main() {
   let matches = App::new("JiraGen")
@@ -17,12 +22,23 @@ fn main() {
     .setting(AppSettings::SubcommandRequiredElseHelp)
     .setting(AppSettings::DisableHelpSubcommand)
     .subcommand(subcommand_init())
-    .subcommand(subcommand_generate())
+    .subcommand(subcommand_push())
     .get_matches();
 
   match matches.subcommand() {
-    ("init", Some(cmd)) => parse_init(cmd),
-    ("generate", Some(cmd)) => parse_generate(cmd),
+    ("init", Some(cmd)) => {
+      match parse_init(cmd) {
+        Ok(_) => (),
+        Err(e) => eprintln!("{}", e),
+      };
+    }
+    // ("generate", Some(cmd)) => parse_generate(cmd),
+    ("push", Some(cmd)) => {
+      match parse_push(cmd) {
+        Ok(_) => (),
+        Err(e) => eprintln!("{}", e),
+      };
+    }
     _ => println!("Invalid command"),
   }
 }
