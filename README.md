@@ -1,8 +1,9 @@
 # JiraGen
 
-A library and CLI tool to generate JIRA issues. This makes it easy to create issue "templates" for repeatable processes (such as releasing a new software version) and track that in JIRA. Uses [version 2 of JIRA’s REST API](https://developer.atlassian.com/cloud/jira/platform/rest/v2/).
+A library and CLI tool to generate JIRA issues. This makes it easy to create issue "templates" for repeatable processes (such as releasing a new software version) and track that in JIRA. Uses [JIRA’s REST API v2](https://developer.atlassian.com/cloud/jira/platform/rest/v2/).
 
 [CLI Docs](jiragen-cli/)
+
 [Library Docs](jiragen-lib/)
 
 ## The Issues Template file
@@ -23,37 +24,37 @@ Some examples of how data is converted from the .csv file to JSON:
 # first row = csv id field/key, second row = readable field name (ignored), third row = value of that id
 
 summary
-Summary
+Summary # Ignored
 A Test Summary
 # { "summary": "A Test Summary" }
 
 labels[]
-Labels
+Labels # Ignored
 a-label
 # { "labels": ["a-label"] }
 
 issuetype.id
-Issue Type
+Issue Type # Ignored
 12345
 # { "issuetype": {"id": "12345"} }
 
 components[].id
-Components
+Components # Ignored
 A Component
 # { "components": [ {"id": "A Component"} ] }
 
 watcher.watchers[].accountId
-Watchers
+Watchers # Ignored
 abcc281-qk3j8d8fj
 # { "watcher": { "watchers": [{"accountId": "abcc281-qk3j8d8fj"}] } }
 
 timetracking.originalEstimate,timetracking.remainingEstimate
-Time Tracking,Time Tracking
+Time Tracking,Time Tracking # Ignored
 10,5
 # { "timetracking": { "originalEstimate": "10", "remainingEstimate": "5" } }
 
 fixVersions[].id,fixVersions[].id
-Fix Versions,Fix Versions
+Fix Versions,Fix Versions # Ignored
 10000,10001
 # { "fixVersions": [ {"id": "10000"}, {"id": "10001"} ] }
 ```

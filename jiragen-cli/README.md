@@ -25,7 +25,7 @@ SUBCOMMANDS:
 
 1. Run `jiragen init`. This creates a config file (default: `./jiragen.json`) and issues template file (default: `./jiragen_issues.csv`).
 1. Edit the config file with your JIRA credentials and save the file.
-1. Edit the issues template .csv file with the issues you would like to generate. Feel free to remove any field columns that are not necessary for issue creation. See [section about how to enter column data](../#csv-syntax).
+1. Edit the issues template .csv file with the issues you would like to generate. Feel free to remove any field columns that are not necessary for issue creation. See [section about how to enter column data](../../../#csv-syntax).
 1. Run `jiragen push`. This reads the data in the file and creates the corresponding issues in JIRA.
 
 ## Commands
