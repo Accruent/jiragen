@@ -6,7 +6,82 @@ use serde_json::{Map, Value};
 
 /// Reads the issues template .csv file and converts it to a JSON object
 /// ```
-/// extern crate filesystem;
+/// use jiragen::csv_to_json;
+/// use csv::StringRecord;
+/// use serde_json::json;
+///
+/// // string conversion
+/// let headers = vec!["summary"];
+/// let records = vec![StringRecord::from(vec!["A Test Summary"])];
+/// assert_eq!(
+///   csv_to_json(headers, records).unwrap(),
+///   vec![json!({ "summary": "A Test Summary" })]
+/// );
+///
+/// // string array conversion
+/// let headers = vec!["labels[]"];
+/// let records = vec![StringRecord::from(vec!["a-label"])];
+/// assert_eq!(
+///   csv_to_json(headers, records).unwrap(),
+///   vec![json!({ "labels": ["a-label"] })]
+/// );
+///
+/// // single array, multiple string values
+/// let headers = vec!["labels[]", "labels[]"];
+/// let records = vec![StringRecord::from(vec!["a-label", "b-label"])];
+/// assert_eq!(
+///   csv_to_json(headers, records).unwrap(),
+///   vec![json!({ "labels": ["a-label", "b-label"] })]
+/// );
+///
+/// // object property
+/// let headers = vec!["issuetype.id"];
+/// let records = vec![StringRecord::from(vec!["12345"])];
+/// assert_eq!(
+///   csv_to_json(headers, records).unwrap(),
+///   vec![json!({ "issuetype": {"id": "12345"} })]
+/// );
+///
+/// // an array of object
+/// let headers = vec!["components[].id"];
+/// let records = vec![StringRecord::from(vec!["A Component"])];
+/// assert_eq!(
+///   csv_to_json(headers, records).unwrap(),
+///   vec![json!({ "components": [{"id": "A Component"}] })]
+/// );
+///
+/// // an object with an array of objects
+/// let headers = vec!["watcher.watchers[].accountId"];
+/// let records = vec![StringRecord::from(vec!["abcc281-qk3j8d8fj"])];
+/// assert_eq!(
+///   csv_to_json(headers, records).unwrap(),
+///   vec![json!({
+///     "watcher": {
+///       "watchers": [
+///         {"accountId": "abcc281-qk3j8d8fj"}
+///       ]
+///     }
+///   })]
+/// );
+///
+/// // single object, multiple properties
+/// let headers = vec![
+///   "timetracking.originalEstimate",
+///   "timetracking.remainingEstimate",
+/// ];
+/// let records = vec![StringRecord::from(vec!["10", "5"])];
+/// assert_eq!(
+///   csv_to_json(headers, records).unwrap(),
+///   vec![json!({ "timetracking": { "originalEstimate": "10", "remainingEstimate": "5" } })]
+/// );
+///
+/// // an array with mutiple objects (each with 1 item)
+/// let headers = vec!["fixVersions[].id", "fixVersions[].id"];
+/// let records = vec![StringRecord::from(vec!["10000", "10001"])];
+/// assert_eq!(
+///   csv_to_json(headers, records).unwrap(),
+///   vec![json!({ "fixVersions": [ {"id": "10000"}, {"id": "10001"} ] })]
+/// );
 /// ```
 pub fn csv_to_json(headers: Vec<&str>, records: Vec<StringRecord>) -> Result<Vec<Value>, Error> {
   let arr: Vec<Value> = records
@@ -127,116 +202,4 @@ fn merge_json(
   };
 
   fields
-}
-
-// /// Reads the config `issues_schema` and converts it to CSV headers
-// pub fn json_schema_to_csv_headers(schema: &Value) {
-//   // read each key/Value
-//   // if string, great
-//   // if array, get first value in array, recurse
-//   // if object, recurse with object,
-//   // need to also send the path that was taken to form the final syntax
-// }
-
-#[cfg(test)]
-mod tests {
-  use super::*;
-  use serde_json::json;
-
-  #[test]
-  fn csv_to_json_converts_string() {
-    let headers = vec!["summary"];
-    let records = vec![StringRecord::from(vec!["A Test Summary"])];
-
-    assert_eq!(
-      csv_to_json(headers, records).unwrap(),
-      vec![json!({ "summary": "A Test Summary" })]
-    );
-  }
-
-  #[test]
-  fn csv_to_json_converts_string_array() {
-    let headers = vec!["labels[]"];
-    let records = vec![StringRecord::from(vec!["a-label"])];
-
-    assert_eq!(
-      csv_to_json(headers, records).unwrap(),
-      vec![json!({ "labels": ["a-label"] })]
-    );
-  }
-
-  #[test]
-  fn csv_to_json_converts_multiple_string_array() {
-    let headers = vec!["labels[]", "labels[]"];
-    let records = vec![StringRecord::from(vec!["a-label", "b-label"])];
-
-    assert_eq!(
-      csv_to_json(headers, records).unwrap(),
-      vec![json!({ "labels": ["a-label", "b-label"] })]
-    );
-  }
-
-  #[test]
-  fn csv_to_json_converts_string_obj_property() {
-    let headers = vec!["issuetype.id"];
-    let records = vec![StringRecord::from(vec!["12345"])];
-
-    assert_eq!(
-      csv_to_json(headers, records).unwrap(),
-      vec![json!({ "issuetype": {"id": "12345"} })]
-    );
-  }
-
-  #[test]
-  fn csv_to_json_converts_array_obj() {
-    let headers = vec!["components[].id"];
-    let records = vec![StringRecord::from(vec!["A Component"])];
-
-    assert_eq!(
-      csv_to_json(headers, records).unwrap(),
-      vec![json!({ "components": [{"id": "A Component"}] })]
-    );
-  }
-
-  #[test]
-  fn csv_to_json_converts_nested_array_obj() {
-    let headers = vec!["watcher.watchers[].accountId"];
-    let records = vec![StringRecord::from(vec!["abcc281-qk3j8d8fj"])];
-
-    assert_eq!(
-      csv_to_json(headers, records).unwrap(),
-      vec![json!({
-        "watcher": {
-          "watchers": [
-            {"accountId": "abcc281-qk3j8d8fj"}
-          ]
-        }
-      })]
-    );
-  }
-
-  #[test]
-  fn csv_to_json_converts_multiple_obj_properties() {
-    let headers = vec![
-      "timetracking.originalEstimate",
-      "timetracking.remainingEstimate",
-    ];
-    let records = vec![StringRecord::from(vec!["10", "5"])];
-
-    assert_eq!(
-      csv_to_json(headers, records).unwrap(),
-      vec![json!({ "timetracking": { "originalEstimate": "10", "remainingEstimate": "5" } })]
-    );
-  }
-
-  #[test]
-  fn csv_to_json_converts_multiple_array_items() {
-    let headers = vec!["fixVersions[].id", "fixVersions[].id"];
-    let records = vec![StringRecord::from(vec!["10000", "10001"])];
-
-    assert_eq!(
-      csv_to_json(headers, records).unwrap(),
-      vec![json!({ "fixVersions": [ {"id": "10000"}, {"id": "10001"} ] })]
-    );
-  }
 }

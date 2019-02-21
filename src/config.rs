@@ -5,7 +5,7 @@ use std::fs::read_to_string;
 pub static DEFAULT_ISSUES_FILE_PATH: &str = "./jiragen_issues.csv";
 pub static DEFAULT_CONFIG_FILE_PATH: &str = "./jiragen.json";
 
-/// JiraGen configuration that is read from/saved to the config file.
+/// JiraGen configuration that is used for sending requests to JIRA.
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
   pub jira_url: String,

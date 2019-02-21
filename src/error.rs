@@ -6,13 +6,14 @@ use std::io::Error as ioError;
 
 #[derive(Debug, Fail)]
 #[fail(display = "An error occurred: {}\n\nDetails:\n{}", message, details)]
+/// Used as a possible value of `Error`.
 pub struct CustomError {
   pub message: String,
   pub details: String,
 }
 
 #[derive(Debug, Fail)]
-/// Error handler for JiraGen-related errors. Encapsulates CSV and HttpRequest errors.
+/// Error handler for JiraGen-related errors. Encapsulates CSV, Reqwest, File, and Serialization errors.
 pub enum Error {
   #[fail(display = "An error occurred when parsing csv file: {}", _0)]
   CsvError(#[fail(cause)] csvError),

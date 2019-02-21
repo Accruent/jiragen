@@ -9,7 +9,6 @@ mod push;
 mod serialize;
 
 use clap::{crate_authors, crate_version, App, AppSettings};
-// use generate::{parse_generate, subcommand_generate};
 use init::{parse_init, subcommand_init};
 use push::{parse_push, subcommand_push};
 
