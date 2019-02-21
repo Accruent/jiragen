@@ -1,0 +1,74 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'jiragen'",
+      "cargo": {
+        "args": ["build", "--bin=jiragen", "--package=jiragen-cli"],
+        "filter": {
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "RUST_BACKTRACE": "1"
+      },
+      "sourceLanguages": ["rust"],
+      "terminal": "integrated"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in binary",
+      "cargo": {
+        "args": ["test", "--bin=jiragen", "--package=jiragen-cli"]
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "RUST_BACKTRACE": "1"
+      },
+      "sourceLanguages": ["rust"],
+      "terminal": "integrated"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in library",
+      "cargo": {
+        "args": ["test", "--lib"]
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "RUST_BACKTRACE": "1"
+      },
+      "sourceLanguages": ["rust"],
+      "terminal": "integrated"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "jiragen init",
+      "cargo": {
+        "args": ["build", "--bin=jiragen", "--package=jiragen-cli"],
+        "filter": {
+          "kind": "bin"
+        }
+      },
+      "args": ["init"],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "RUST_BACKTRACE": "1"
+      },
+      "sourceLanguages": ["rust"],
+      "terminal": "integrated"
+    }
+  ]
+}

@@ -32,8 +32,7 @@ pub fn parse_push(matches: &ArgMatches) -> Result<(), Error> {
   // skip line 2, which contains human-readable field names
   csv_records.next();
 
-  // create bulk fields to send starting on line 3
-  // let mut issues_to_create: Vec<JiraIssue> = vec![];
+  // create bulk issues to send starting on line 3
   let filtered_csv_records: Vec<StringRecord> = csv_records
     .filter_map(|record_result| match record_result {
       Ok(result) => Some(result),

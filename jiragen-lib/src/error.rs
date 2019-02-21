@@ -6,9 +6,11 @@ use std::io::Error as ioError;
 
 #[derive(Debug, Fail)]
 #[fail(display = "An error occurred: {}\n\nDetails:\n{}", message, details)]
-/// Used as a possible value of `Error`.
+/// Used as a possible value of [`Error`](enum.Error.html).
 pub struct CustomError {
+  /// A short error message describing the error.
   pub message: String,
+  /// Any additional details that can inform the user.
   pub details: String,
 }
 

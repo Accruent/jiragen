@@ -6,10 +6,10 @@ use serde::Serialize;
 use serde_json::Value;
 use std::collections::HashMap;
 
-/// Handles requests sent to JIRA.
+/// A `JiraClient` instance handles requests sent to JIRA. An instance is created via `JiraClient::new(`[`Config`](struct.Config.html)`)`, and then that instance can then be used for creating requests to JIRA, via `.init_request()` (which creates authorization headers using the `Config` username/password).
 pub struct JiraClient {
-  pub client: Client,
-  pub config: Config,
+  client: Client,
+  config: Config,
 }
 
 impl JiraClient {
@@ -34,7 +34,17 @@ impl JiraClient {
     Self { client, config }
   }
 
-  /// Creates a reqwest Request Builder with some predefined authorization headers
+  /// Returns a reference to the [`Reqwest`](https://docs.rs/reqwest/) `Client` with preconfigured headers.
+  pub fn get_client(&self) -> &Client {
+    &self.client
+  }
+
+  /// Returns a reference to the JIRA [`Config`](struct.Config.html) object.
+  pub fn get_config(&self) -> &Config {
+    &self.config
+  }
+
+  /// Creates a reqwest Request Builder with some predefined authorization headers.
   /// ```
   /// use jiragen::{Config, JiraClient};
   /// use serde_json::json;
@@ -66,6 +76,24 @@ impl JiraClient {
 
 #[derive(Debug, Serialize)]
 /// The object to send to JIRA’s "bulk issue creation" API endpoint
+/// ```no_run
+/// use jiragen::JiraIssue;
+/// use serde_json::json;
+///
+/// let issue_json = json!(vec![
+///   JiraIssue {
+///     update: None, // not implemented
+///     fields: json!({
+///       "project": "10000",
+///       "summary": "Issue Summary",
+///       "description": "Issue description."
+///     })
+///   }
+/// ]);
+/// let json_to_send = json!({
+///   "issueUpdates": issue_json
+/// });
+/// ```
 pub struct JiraIssue {
   /// not implemented, set as `None`.
   pub update: Option<HashMap<String, HashMap<String, Vec<String>>>>,
