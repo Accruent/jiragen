@@ -4,15 +4,21 @@ A library and CLI tool to generate JIRA issues. This makes it easy to create iss
 
 [CLI Docs](jiragen-cli/)
 
-[Library Docs](jiragen-lib/)
+[Library Docs](https://docs.rs/jiragen)
 
 ## The Issues Template file
 
-JiraGen reads a .csv file that represents the issues (and their field values) to be created in JIRA.
+JiraGen reads a .csv file that represents the issues (and their field values) to be created in JIRA (using the `push` command).
 
-The first row of the generated .csv file (from the `init` command) contains the field ids, and the second row contains the field names. Actual issue content should be entered starting on the third row. Note that the second row is ignored (it is used for human readability).
+```csv
+summary,description,project.key
+Summary,Description,Project
+A Summary,A Description,CON
+```
 
-JiraGen will read from this file in order to generate the corresponding issues in JIRA (using the `push` command).
+- The first row of the generated .csv file (from the `init` command) contains the field ids.
+- The second row contains the field names. This row is ignored (it is used for human readability).
+- Actual issue content should be entered starting on the third row.
 
 ## .csv syntax
 
