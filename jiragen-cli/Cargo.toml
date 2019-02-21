@@ -19,5 +19,6 @@ jiragen = "^0.9"
 serde_json = "^1.0"
 
 [[bin]]
-name = "jiragen-cli"
+name = "jiragen"
 path = "src/main.rs"
+doc = false

@@ -2,7 +2,7 @@
 //!
 //! ## Installation
 //!
-//! Download the binary (located in the releases section of the GitHub repo) and run it on the command line.
+//! Download the binary (located in the releases section of the GitHub repo) and run it on the command line. Alternatively if you already have Rust installed, you can run `cargo install jiragen-cli`.
 //!
 //! ## Usage
 //!
