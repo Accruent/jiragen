@@ -1,12 +1,6 @@
-#[macro_use]
-extern crate lazy_static;
-
-mod api;
 mod config;
-mod error;
 mod init;
 mod push;
-mod serialize;
 
 use clap::{crate_authors, crate_version, App, AppSettings};
 use init::{parse_init, subcommand_init};

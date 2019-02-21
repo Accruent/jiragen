@@ -1,9 +1,7 @@
-use crate::api::{JiraClient, JiraIssue /*, JiraIssueFieldVariant*/};
 use crate::config::{get_config_arg, get_issues_arg, read_config_file};
-use crate::error::{CustomError, Error};
-use crate::serialize::csv_to_json;
 use clap::{App, ArgMatches, SubCommand};
 use csv::{Reader, StringRecord};
+use jiragen::{csv_to_json, CustomError, Error, JiraClient, JiraIssue};
 use serde_json::{json, Value};
 
 /// Returns the `push` SubCommand.

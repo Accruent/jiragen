@@ -1,6 +1,6 @@
-use crate::config::{get_config_arg, get_issues_arg, Config};
-use crate::error::Error;
+use crate::config::{get_config_arg, get_issues_arg};
 use clap::{App, ArgMatches, SubCommand};
+use jiragen::{Config, Error};
 use std::fs::write;
 
 /// Returns the `init` SubCommand.

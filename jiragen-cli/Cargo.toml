@@ -1,0 +1,15 @@
+[package]
+name = "jiragen-cli"
+version = "0.1.0"
+authors = ["Kai Yao <kai.b.yao@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+clap = { version = "^2.32", features = ["color"] }
+csv = "^1.0"
+jiragen = { path = "../jiragen-lib" }
+serde_json = "^1.0"
+
+[[bin]]
+name = "jiragen"
+path = "src/main.rs"

@@ -1,17 +1,9 @@
 use clap::Arg;
-use serde::{Deserialize, Serialize};
+use jiragen::Config;
 use std::fs::read_to_string;
 
 pub static DEFAULT_ISSUES_FILE_PATH: &str = "./jiragen_issues.csv";
 pub static DEFAULT_CONFIG_FILE_PATH: &str = "./jiragen.json";
-
-/// JiraGen configuration that is used for sending requests to JIRA.
-#[derive(Debug, Deserialize, Serialize)]
-pub struct Config {
-  pub jira_url: String,
-  pub jira_user: String,
-  pub jira_password: String,
-}
 
 /// Returns the --config argument options
 pub fn get_config_arg<'a, 'b>() -> Arg<'a, 'b> {
