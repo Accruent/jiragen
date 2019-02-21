@@ -1,6 +1,6 @@
 # `jiragen-cli`
 
-The command line tool to send bulk issue creation requests to JIRA from a .csv file.
+A command line tool to send bulk issue creation requests to JIRA from a .csv file.
 
 ## Installation
 
