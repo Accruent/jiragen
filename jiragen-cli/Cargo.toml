@@ -1,14 +1,16 @@
 [package]
 name = "jiragen-cli"
 description = "A command line tool to send bulk issue creation requests to JIRA from a .csv file."
-version = "0.9.0"
+version = "0.9.1"
 authors = ["Kai Yao <kai.b.yao@gmail.com>"]
 edition = "2018"
 
 repository = "https://github.com/Accruent/jiragen"
 categories = ["command-line-utilities"]
+documentation = "https://github.com/Accruent/jiragen/tree/master/jiragen-cli"
 keywords = ["jira"]
 license = "MIT"
+readme = "README.md"
 
 [dependencies]
 clap = { version = "^2.32", features = ["color"] }
