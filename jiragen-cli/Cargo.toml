@@ -14,7 +14,7 @@ readme = "README.md"
 
 [dependencies]
 clap = { version = "^2.32", features = ["color"] }
-csv = "^1.0"
+csv = "^1.1"
 jiragen = "^0.9"
 serde_json = "^1.0"
 
